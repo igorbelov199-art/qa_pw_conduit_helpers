@@ -10,7 +10,11 @@ export class CreateArticlePage {
     this.publishArticleButton = page.getByRole('button', {
       name: 'Publish Article',
     });
+    this.deleteTagButton = page.locator(
+      '.tag-default.tag-pill >> .ion-close-round',
+    );
     this.errorMessage = page.getByRole('list').nth(1);
+    this.tagText = page.getByText('tag-default');
   }
 
   async fillTitleField(title) {
@@ -41,21 +45,39 @@ export class CreateArticlePage {
     });
   }
 
-  async fillTagField(tag) {
-    await test.step(`Fill the 'Tag' field`, async () => {
-      await this.tagField.fill(tag);
-    });
-  }
-
   async clickPublishArticleButton() {
     await test.step(`Click the 'Publish Article' button`, async () => {
       await this.publishArticleButton.click();
     });
   }
 
+  async clickDeletTagButton() {
+    await test.step(`Click the 'Delete Tag' button`, async () => {
+      await this.deleteTagButton.click();
+    });
+  }
+
   async assertErrorMessageContainsText(messageText) {
     await test.step(`Assert the '${messageText}' error is shown`, async () => {
       await expect(this.errorMessage).toContainText(messageText);
+    });
+  }
+
+  async assertDescriptionFieldHasValue(expectedValue) {
+    await test.step(`Assert description field has value "${expectedValue}"`, async () => {
+      await expect(this.descriptionField).toHaveValue(expectedValue);
+    });
+  }
+
+  async assertTagTextIsVisible(text) {
+    await test.step(`Assert the article has correct text'`, async () => {
+      await expect(this.page.getByText(text)).toBeVisible();
+    });
+  }
+
+  async assertTagTextIsNotVisible(text) {
+    await test.step(`Assert the article has correct text'`, async () => {
+      await expect(this.page.getByText(text)).toBeHidden();
     });
   }
 }
