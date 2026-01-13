@@ -32,6 +32,6 @@ test('Add the tag for the existing article with tags', async ({ page }) => {
   await createArticlePage.fillTagField(newTag);
   await viewArticlePage.clickUpdateArticleButton();
 
-  await viewArticlePage.assertArticleTagIsVisible(article.tag);
+  await viewArticlePage.assertArticleTagIsVisible(newTag);
   await viewArticlePage.assertArticleTextIsVisible(article.text);
 });

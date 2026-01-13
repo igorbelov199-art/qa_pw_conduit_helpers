@@ -1,18 +1,16 @@
 import { test } from '@playwright/test';
-import { HomePage } from '../../src/ui/pages/HomePage';
 import { CreateArticlePage } from '../../src/ui/pages/article/CreateArticlePage';
 import { ViewArticlePage } from '../../src/ui/pages/article/ViewArticlePage';
 import { generateNewUserData } from '../../src/common/testData/generateNewUserData';
 import { generateNewArticleData } from '../../src/common/testData/generateNewArticleData';
 import { signUpUser } from '../../src/ui/actions/auth/signUpUser';
+import { createNewArticle } from '../../src/ui/actions/article/createNewArticle';
 
-let homePage;
 let createArticlePage;
 let viewArticlePage;
 let article;
 
 test.beforeEach(async ({ page }) => {
-  homePage = new HomePage(page);
   createArticlePage = new CreateArticlePage(page);
   viewArticlePage = new ViewArticlePage(page);
 
@@ -22,12 +20,8 @@ test.beforeEach(async ({ page }) => {
   await signUpUser(page, user);
 });
 
-test('Edit the article description for the existing article', async () => {
-  await homePage.clickNewArticleLink();
-  await createArticlePage.fillTitleField(article.title);
-  await createArticlePage.fillDescriptionField(article.description);
-  await createArticlePage.fillTextField(article.text);
-  await createArticlePage.clickPublishArticleButton();
+test('Edit the article text for the existing article', async ({ page }) => {
+  await createNewArticle(page, article);
 
   const newText = 'Updated Text';
   await viewArticlePage.assertArticleTitleIsVisible(article.title);
