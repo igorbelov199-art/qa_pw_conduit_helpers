@@ -9,8 +9,8 @@ export async function createNewArticle(page, article) {
 
     await createArticlePage.fillTitleField(article.title);
     await createArticlePage.fillDescriptionField(article.description);
-    await createArticlePage.fillTextField(article.body);
-    await createArticlePage.fillTagField(article.tag);
+    await createArticlePage.fillTextField(article.text);
+    await createArticlePage.fillTagField(article.tags);
 
     await createArticlePage.clickPublishArticleButton();
   });

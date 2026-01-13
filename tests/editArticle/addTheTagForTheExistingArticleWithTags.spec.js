@@ -1,18 +1,19 @@
 import { test } from '@playwright/test';
-import { HomePage } from '../../src/ui/pages/HomePage';
+//import { HomePage } from '../../src/ui/pages/HomePage';
 import { CreateArticlePage } from '../../src/ui/pages/article/CreateArticlePage';
 import { ViewArticlePage } from '../../src/ui/pages/article/ViewArticlePage';
 import { generateNewUserData } from '../../src/common/testData/generateNewUserData';
 import { generateNewArticleData } from '../../src/common/testData/generateNewArticleData';
 import { signUpUser } from '../../src/ui/actions/auth/signUpUser';
+import { createNewArticle } from '../../src/ui/actions/article/createNewArticle';
 
-let homePage;
+//let homePage;
 let createArticlePage;
 let viewArticlePage;
 let article;
 
 test.beforeEach(async ({ page }) => {
-  homePage = new HomePage(page);
+  //  homePage = new HomePage(page);
   createArticlePage = new CreateArticlePage(page);
   viewArticlePage = new ViewArticlePage(page);
 
@@ -22,14 +23,8 @@ test.beforeEach(async ({ page }) => {
   await signUpUser(page, user);
 });
 
-test('Add the tag for the existing article without tags', async () => {
-  await homePage.clickNewArticleLink();
-  await createArticlePage.fillTitleField(article.title);
-  await createArticlePage.fillDescriptionField(article.description);
-  await createArticlePage.fillTextField(article.text);
-  await createArticlePage.fillTagField(article.tag);
-  await createArticlePage.clickPublishArticleButton();
-  await createArticlePage.clickPublishArticleButton();
+test('Add the tag for the existing article with tags', async ({ page }) => {
+  await createNewArticle(page, article);
 
   const newTag = 'New Tag';
   await viewArticlePage.assertArticleTitleIsVisible(article.title);
@@ -37,6 +32,6 @@ test('Add the tag for the existing article without tags', async () => {
   await createArticlePage.fillTagField(newTag);
   await viewArticlePage.clickUpdateArticleButton();
 
-  await viewArticlePage.assertArticleTagIsVisible(newTag);
+  await viewArticlePage.assertArticleTagIsVisible(article.tag);
   await viewArticlePage.assertArticleTextIsVisible(article.text);
 });

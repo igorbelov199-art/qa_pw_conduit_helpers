@@ -17,6 +17,12 @@ export class CreateArticlePage {
     this.tagText = page.getByText('tag-default');
   }
 
+  async open() {
+    await test.step(`Open 'New Article' page`, async () => {
+      await this.page.goto('/editor');
+    });
+  }
+
   async fillTitleField(title) {
     await test.step(`Fill the 'Title' field`, async () => {
       await this.titleField.fill(title);
